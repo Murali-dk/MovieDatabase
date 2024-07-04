@@ -1,0 +1,62 @@
+.loader {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.movie-bg-cont {
+  background-color: grey;
+  padding-bottom: 20px;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+.siglePageCont {
+  display: none;
+  width: 100%;
+  background-size: cover;
+}
+.cast-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 0px;
+  text-align: center;
+}
+@media screen and (min-width: 768px) {
+  .siglePageCont {
+    display: block;
+  }
+}
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+}
+.cast-card {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.img {
+  width: 250px;
+  margin: 10px;
+}
+.cast-img {
+  width: 200px;
+  max-width: 400px;
+}
+@media (min-width: 768px) {
+  .img {
+    width: 40%;
+    height: 100%;
+    margin-bottom: 0px;
+  }
+  .container {
+    flex-direction: row;
+    margin-bottom: 0px;
+  }
+}
