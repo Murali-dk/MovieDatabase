@@ -12,6 +12,7 @@ const constantOfApiResponse = {
 }
 const TopRated = () => {
   const [apiResponse, setResponse] = useState(constantOfApiResponse.initial)
+  const [moviePage, setMoviepage] = useState(1)
   const [responsedData, setData] = useState({})
 
   const convertCamelCase = data => ({
@@ -25,7 +26,7 @@ const TopRated = () => {
       originalTitle: eachItem.original_title,
       overview: eachItem.overview,
       popularity: eachItem.popularity,
-      posterpath: `https://image.tmdb.org/t/p/w500/${eachItem.poster_path}`,
+      posterPath: `https://image.tmdb.org/t/p/w500/${eachItem.poster_path}`,
       releaseDate: eachItem.release_date,
       title: eachItem.title,
       video: eachItem.video,
@@ -36,19 +37,21 @@ const TopRated = () => {
     totalResults: data.total_results,
   })
 
+  const getApiResposed = async () => {
+    setResponse(constantOfApiResponse.inProgress)
+    const pagination = moviePage < 500 ? moviePage : 500
+    const myApiKey = 'fe5632f5a02061da51fce31afaed6c5c'
+    const url = `https://api.themoviedb.org/3/movie/top_rated?api_key=${myApiKey}&language=en-US&page=${pagination}`
+    const response = await fetch(url)
+    const data = await response.json()
+    const updateData = convertCamelCase(data)
+    setData(updateData)
+    setResponse(constantOfApiResponse.success)
+  }
+
   useEffect(() => {
-    const getApiResposed = async () => {
-      setResponse(constantOfApiResponse.inProgress)
-      const myApiKey = 'fe5632f5a02061da51fce31afaed6c5c'
-      const url = `https://api.themoviedb.org/3/movie/top_rated?api_key=${myApiKey}&language=en-US&page=1`
-      const response = await fetch(url)
-      const data = await response.json()
-      const updateData = convertCamelCase(data)
-      setData(updateData)
-      setResponse(constantOfApiResponse.success)
-    }
     getApiResposed()
-  }, [])
+  }, [moviePage])
 
   const getLoadingView = () => (
     <div className="loader" data-testid="loader">
@@ -64,6 +67,14 @@ const TopRated = () => {
     </ul>
   )
 
+  const previousPage = () => {
+    setMoviepage(preve => (preve > 1 ? preve - 1 : 1), getApiResposed())
+  }
+
+  const nextPage = () => {
+    setMoviepage(preve => (preve < 500 ? preve + 1 : 500), getApiResposed())
+  }
+
   const switchCases = () => {
     switch (apiResponse) {
       case constantOfApiResponse.inProgress:
@@ -78,6 +89,15 @@ const TopRated = () => {
   return (
     <div>
       <Header />
+      <div className="pagination-btn-cont">
+        <button onClick={previousPage} className="page-btn" type="button">
+          Prev
+        </button>
+        <p>{moviePage}</p>
+        <button onClick={nextPage} className="page-btn" type="button">
+          Next
+        </button>
+      </div>
       {switchCases()}
     </div>
   )

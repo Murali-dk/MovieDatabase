@@ -12,7 +12,11 @@ const constantOfApiResponse = {
 }
 
 class Home extends Component {
-  state = {apiRespose: constantOfApiResponse.initial, allMoviesList: []}
+  state = {
+    apiRespose: constantOfApiResponse.initial,
+    allMoviesList: [],
+    moviePage: 1,
+  }
 
   componentDidMount() {
     this.getApi()
@@ -29,7 +33,7 @@ class Home extends Component {
       originalTitle: eachItem.original_title,
       overview: eachItem.overview,
       popularity: eachItem.popularity,
-      posterpath: `https://image.tmdb.org/t/p/w500/${eachItem.poster_path}`,
+      posterPath: `https://image.tmdb.org/t/p/w500/${eachItem.poster_path}`,
       releaseDate: eachItem.release_date,
       title: eachItem.title,
       video: eachItem.video,
@@ -42,8 +46,10 @@ class Home extends Component {
 
   getApi = async () => {
     this.setState({apiRespose: constantOfApiResponse.inProgress})
+    const {moviePage} = this.state
+    const pagination = moviePage < 500 ? moviePage : 500
     const myApiKey = 'fe5632f5a02061da51fce31afaed6c5c'
-    const url = `https://api.themoviedb.org/3/movie/popular?api_key=${myApiKey}&language=en-US&page=1`
+    const url = `https://api.themoviedb.org/3/movie/popular?api_key=${myApiKey}&language=en-US&page=${pagination}`
     const response = await fetch(url)
     const data = await response.json()
     console.log(data)
@@ -71,6 +77,24 @@ class Home extends Component {
     )
   }
 
+  previousPage = () => {
+    this.setState(
+      preveStae => ({
+        moviePage: preveStae.moviePage > 1 ? preveStae.moviePage - 1 : 1,
+      }),
+      this.getApi,
+    )
+  }
+
+  nextPage = () => {
+    this.setState(
+      preveStae => ({
+        moviePage: preveStae.moviePage < 500 ? preveStae.moviePage + 1 : 500,
+      }),
+      this.getApi,
+    )
+  }
+
   swithResponse = () => {
     const {apiRespose} = this.state
 
@@ -85,9 +109,23 @@ class Home extends Component {
   }
 
   render() {
+    const {moviePage} = this.state
     return (
       <div>
         <Header />
+        <div className="pagination-btn-cont">
+          <button
+            onClick={this.previousPage}
+            className="page-btn"
+            type="button"
+          >
+            Prev
+          </button>
+          <p>{moviePage}</p>
+          <button onClick={this.nextPage} className="page-btn" type="button">
+            Next
+          </button>
+        </div>
         {this.swithResponse()}
       </div>
     )
