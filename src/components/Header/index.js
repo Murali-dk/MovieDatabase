@@ -1,9 +1,6 @@
 import {useState} from 'react'
 import {Link} from 'react-router-dom'
-import Popup from 'reactjs-popup'
-import {TiThMenuOutline} from 'react-icons/ti'
 
-import 'reactjs-popup/dist/index.css'
 import './index.css'
 
 const Header = () => {
@@ -17,48 +14,18 @@ const Header = () => {
     <nav className="nav-bar-cont">
       <div className="nav-content">
         <h1 className="nav-head">movieDB</h1>
-        <div>
-          <Popup
-            trigger={
-              <button type="button" className="nav-icon">
-                {' '}
-                <TiThMenuOutline />
-              </button>
-            }
-            position="bottom center"
-          >
-            <ul className="nav-sm-list">
-              <li key="1">
-                <Link to="/">
-                  <button className="nav-page-small-btn" type="button">
-                    Popular
-                  </button>
-                </Link>
-              </li>
-              <li key="2">
-                <Link to="/top-rated">
-                  <button className="nav-page-small-btn" type="button">
-                    Top Rated
-                  </button>
-                </Link>
-              </li>
-              <li key="3">
-                <Link to="/upcoming">
-                  <button className="nav-page-small-btn" type="button">
-                    Upcoming
-                  </button>
-                </Link>
-              </li>
-            </ul>
-          </Popup>
+        <div className="search-cont">
+          <input
+            placeholder="Search For a Movie"
+            value={userInput}
+            className="nav-large-input"
+            onChange={userSearching}
+            type="text"
+          />
+          <button type="button">
+            <Link to={`/search-page/${userInput}`}>Search</Link>
+          </button>
         </div>
-        <input
-          type="search"
-          placeholder="Search For a Movie"
-          value={userInput}
-          className="nav-large-input"
-          onChange={userSearching}
-        />
         <ul className="nav-pages-list">
           <li key="1">
             <Link to="/">
@@ -83,7 +50,7 @@ const Header = () => {
           </li>
         </ul>
       </div>
-      <div>
+      <div className="inp">
         <input
           type="search"
           placeholder="Search For a Movie"
@@ -91,6 +58,10 @@ const Header = () => {
           className="nav-sm-input"
           onChange={userSearching}
         />
+        <Link to={`/search-page/${userInput}`}>
+          <button type="button">Search</button>
+        </Link>
+        <button type="button">Search</button>
       </div>
     </nav>
   )

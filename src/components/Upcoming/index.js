@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
-import {Link} from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 
+import MovieCard from '../MovieCard'
 import Header from '../Header'
 import './index.css'
 
@@ -25,7 +25,7 @@ const Upcoming = () => {
       originalTitle: eachItem.original_title,
       overview: eachItem.overview,
       popularity: eachItem.popularity,
-      posterPath: eachItem.poster_path,
+      posterpath: `https://image.tmdb.org/t/p/w500/${eachItem.poster_path}`,
       releaseDate: eachItem.release_date,
       title: eachItem.title,
       video: eachItem.video,
@@ -57,27 +57,11 @@ const Upcoming = () => {
   )
 
   const successView = () => (
-    <div className="movie-bg-cont">
-      {responsedData.results.map(eachMovie => {
-        const {posterPath} = eachMovie
-        return (
-          <div key={eachMovie.id} className="single-movie-poster-card">
-            <img
-              className="movie-poster"
-              alt="poster"
-              src={`https://image.tmdb.org/t/p/w500/${posterPath}`}
-            />
-            <h4>{eachMovie.title}</h4>
-            <p>{eachMovie.voteAverage}</p>
-            <Link to={`/movie/${eachMovie.id}`}>
-              <button className="detail-view-btn" type="button">
-                View Details
-              </button>
-            </Link>
-          </div>
-        )
-      })}
-    </div>
+    <ul className="movie-bg-cont">
+      {responsedData.results.map(eachMovie => (
+        <MovieCard key={eachMovie.id} eachMovie={eachMovie} />
+      ))}
+    </ul>
   )
 
   const switchCases = () => {

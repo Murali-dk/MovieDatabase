@@ -78,9 +78,22 @@
   display: flex;
   justify-content: center;
 }
+.search-cont {
+  justify-content: space-between;
+  background-color: #ffffff;
+  height: 40px;
+  width: 450px;
+  display: none;
+}
 @media screen and (min-width: 768px) {
   .nav-icon {
     display: none;
+  }
+  .inp {
+    display: none;
+  }
+  .search-cont {
+    display: flex;
   }
   .nav-head {
     font-size: 30px;
